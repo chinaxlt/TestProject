@@ -1,11 +1,13 @@
 package org.chinaxlt;
 
+import com.mchange.v2.sql.filter.SynchronizedFilterDataSource;
 import org.chinaxlt.forClass.*;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class MainTest {
 
@@ -102,5 +104,18 @@ public class MainTest {
         field.setAccessible(true);
         field.set(sa, "99");
         System.out.println(sa.getValue());
+    }
+
+    @Test
+    public void listTest() {
+        List<Integer> nums = new ArrayList<>();
+        nums.add(-2);
+        nums.add(-1);
+        nums.add(0);
+        nums.add(1);
+        List<Integer> numlist1 = nums.stream().filter(num -> num < 0).collect(Collectors.toList());
+        List<Integer> numlist2 = nums.stream().filter(num -> num >= 0).collect(Collectors.toList());
+        System.out.println(numlist1.toString());
+        System.out.println(numlist2.toString());
     }
 }
