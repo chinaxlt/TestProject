@@ -1,6 +1,5 @@
 package org.chinaxlt;
 
-import com.mchange.v2.sql.filter.SynchronizedFilterDataSource;
 import org.chinaxlt.forClass.*;
 import org.junit.Test;
 
@@ -117,5 +116,7 @@ public class MainTest {
         List<Integer> numlist2 = nums.stream().filter(num -> num >= 0).collect(Collectors.toList());
         System.out.println(numlist1.toString());
         System.out.println(numlist2.toString());
+        List<String> typelist = Arrays.asList(TypeEnum.values()).stream().map(te -> te.getStatus()).collect(Collectors.toList());
+        System.out.println(typelist.toString());
     }
 }
