@@ -119,4 +119,11 @@ public class MainTest {
         List<String> typelist = Arrays.asList(TypeEnum.values()).stream().map(te -> te.getStatus()).collect(Collectors.toList());
         System.out.println(typelist.toString());
     }
+
+    @Test
+    public void test() {
+
+    }
+
+
 }
