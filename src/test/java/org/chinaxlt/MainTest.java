@@ -1,11 +1,16 @@
 package org.chinaxlt;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.chinaxlt.forClass.*;
+import org.chinaxlt.forInterface.MyConverter;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MainTest {
@@ -156,5 +161,43 @@ public class MainTest {
         }
     }
 
+    @Test
+    public void booleanTest() {
+        System.out.println(0 > 0);
+        System.out.println(1 > 0);
+        Map<String, String> map = new HashMap<>();
+        map.put("key1", "value1");
+        map.put("key2", "value2");
+        System.out.println(map);
+    }
 
+    @Test
+    public void myTest() {
+        List values = Arrays.asList(1, 2, 3, 4, 5);
+        values.forEach(n -> System.out.println("value:" + n));
+
+        Predicate<String> check = a -> a.length() > 0;
+        System.out.println(check.test("12345"));
+        Predicate<Object> check2 = Objects::nonNull;
+        System.out.println(check2.test("12345"));
+
+        String str = "1-2 - 3 -4-5";
+        List<String> strlist = Splitter.on("-").omitEmptyStrings().trimResults().splitToList(str);
+        strlist.forEach(System.out::println);
+    }
+
+    @Test
+    public void ConverterTest() {
+        List<String> dataList = Lists.newArrayList();
+        dataList.add("LIST");
+        Map<String, String> dataMap = Maps.newHashMap();
+        dataMap.put("KEY" , "VALUS");
+
+        MyModel myModel = new MyModel();
+        myModel.setDataList(dataList);
+        myModel.setDataMap(dataMap);
+
+        MyDTO myDto = MyConverter.instance.domain2dto(myModel);
+        System.out.println(myDto);
+    }
 }
