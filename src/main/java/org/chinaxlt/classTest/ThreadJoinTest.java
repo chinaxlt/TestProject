@@ -1,4 +1,4 @@
-package org.chinaxlt.forClass;
+package org.chinaxlt.classTest;
 
 public class ThreadJoinTest {
 

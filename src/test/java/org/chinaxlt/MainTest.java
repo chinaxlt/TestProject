@@ -1,13 +1,19 @@
 package org.chinaxlt;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.chinaxlt.forClass.*;
-import org.chinaxlt.forInterface.MyConverter;
+import com.google.common.hash.Hashing;
+import org.apache.commons.beanutils.BeanUtils;
+import org.chinaxlt.classTest.*;
+import org.chinaxlt.util.ObjectUtils;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Predicate;
@@ -117,12 +123,52 @@ public class MainTest {
         nums.add(-1);
         nums.add(0);
         nums.add(1);
+        nums.add(1);
         List<Integer> numlist1 = nums.stream().filter(num -> num < 0).collect(Collectors.toList());
         List<Integer> numlist2 = nums.stream().filter(num -> num >= 0).collect(Collectors.toList());
         System.out.println(numlist1.toString());
         System.out.println(numlist2.toString());
         List<String> typelist = Arrays.asList(TypeEnum.values()).stream().map(te -> te.getStatus()).collect(Collectors.toList());
         System.out.println(typelist.toString());
+    }
+
+    @Test
+    public void timeTest() {
+        //Asia/Kuala_Lumpur +8
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        System.out.println("System Default TimeZone : " + defaultZoneId);
+
+        //toString() append +8 automatically.
+        Date date = new Date();
+        System.out.println("date : " + date);
+
+        //1. Convert Date -> Instant
+        Instant instant = date.toInstant();
+        System.out.println("instant : " + instant); //Zone : UTC+0
+
+        //2. Instant + system default time zone + toLocalDate() = LocalDate
+        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+        System.out.println("localDate : " + localDate);
+
+        //3. Instant + system default time zone + toLocalDateTime() = LocalDateTime
+        LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
+        System.out.println("localDateTime : " + localDateTime);
+
+        //4. Instant + system default time zone = ZonedDateTime
+        ZonedDateTime zonedDateTime = instant.atZone(defaultZoneId);
+        System.out.println("zonedDateTime : " + zonedDateTime);
+    }
+
+
+    @Test
+    public void timeTest2() {
+        Date now = new Date();
+        // java.util.Date -> java.time.LocalDate
+        LocalDate localDate = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        // java.time.LocalDate -> java.sql.Date
+        Date newDate = java.sql.Date.valueOf(localDate);
+        System.out.println("now:" + now);
+        System.out.println("newDate:" + newDate);
     }
 
     @Test
@@ -191,13 +237,61 @@ public class MainTest {
         List<String> dataList = Lists.newArrayList();
         dataList.add("LIST");
         Map<String, String> dataMap = Maps.newHashMap();
-        dataMap.put("KEY" , "VALUS");
+        dataMap.put("KEY", "VALUS");
 
         MyModel myModel = new MyModel();
         myModel.setDataList(dataList);
         myModel.setDataMap(dataMap);
 
-        MyDTO myDto = MyConverter.instance.domain2dto(myModel);
-        System.out.println(myDto);
+//        MyDTO myDto = MyConverter.instance.domain2dto(myModel);
+//        System.out.println(myDto);
+    }
+
+    @Test
+    public void dateTest() {
+        Calendar rightNow = Calendar.getInstance();
+        rightNow.setTime(new Date());
+        rightNow.add(Calendar.YEAR, -1);//日期减1年
+        rightNow.add(Calendar.MONTH, 3);//日期加3个月
+        rightNow.add(Calendar.DAY_OF_YEAR, 10);//日期加10天
+        Date date = rightNow.getTime();
+        System.out.println(date.toString());
+    }
+
+    @Test
+    public void beanTest() throws InvocationTargetException, IllegalAccessException {
+        Map<String, String> beanMap = Maps.newHashMap();
+        beanMap.put("name", "xlt");
+        beanMap.put("age", "12");
+        beanMap.put("sex", "man");
+        beanMap.put("isDead", "false");
+        Bean bean = new Bean();
+        BeanUtils.populate(bean, beanMap);
+        List<Bean> beans = Lists.newArrayList();
+        beans.add(new Bean("xlt1", 11, false));
+        beans.add(new Bean("xlt2", 12, true));
+        beans.add(new Bean("xlt3", 13, false));
+        beans.add(new Bean("xlt4", 14, true));
+        bean.setBeans(beans);
+        Map<String, Object> objectMap = ObjectUtils.objectToMap(bean);
+        Bean newBean = new Bean();
+        BeanUtils.populate(newBean, objectMap);
+        System.out.println(bean.toString());
+        System.out.println(objectMap.toString());
+    }
+
+    @Test
+    public void hashTest() {
+        List<String> ips = Lists.newArrayList();
+        ips.add("127.0.0.1");
+        ips.add("127.0.0.2");
+        System.out.println(
+                Hashing.md5().newHasher()
+                        .putLong(100L)
+                        .putString(Joiner.on("").join(ips), Charsets.UTF_8)
+                        .putString("yanan", Charsets.UTF_8)
+                        .hash()
+                        .toString()
+        );
     }
 }

@@ -1,4 +1,4 @@
-package org.chinaxlt.forClass;
+package org.chinaxlt.classTest;
 
 public class Factory {
     //getClass 产生Sample 一般可使用动态类装载装入类。

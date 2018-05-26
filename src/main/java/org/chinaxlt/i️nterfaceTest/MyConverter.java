@@ -1,7 +1,7 @@
-package org.chinaxlt.forInterface;
+package org.chinaxlt.i️nterfaceTest;
 
-import org.chinaxlt.forClass.MyDTO;
-import org.chinaxlt.forClass.MyModel;
+import org.chinaxlt.classTest.MyDTO;
+import org.chinaxlt.classTest.MyModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -1,4 +1,4 @@
-package org.chinaxlt.forClass;
+package org.chinaxlt.classTest;
 
 import java.util.concurrent.Callable;
 
