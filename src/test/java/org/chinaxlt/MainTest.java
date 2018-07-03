@@ -6,6 +6,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.hash.Hashing;
+import lombok.val;
 import org.apache.commons.beanutils.BeanUtils;
 import org.chinaxlt.classTest.*;
 import org.chinaxlt.util.ObjectUtils;
@@ -126,6 +127,7 @@ public class MainTest {
         nums.add(1);
         List<Integer> numlist1 = nums.stream().filter(num -> num < 0).collect(Collectors.toList());
         List<Integer> numlist2 = nums.stream().filter(num -> num >= 0).collect(Collectors.toList());
+        List<Integer> numlist3 = nums.stream().filter(num -> num >= 10).collect(Collectors.toList());
         System.out.println(numlist1.toString());
         System.out.println(numlist2.toString());
         List<String> typelist = Arrays.asList(TypeEnum.values()).stream().map(te -> te.getStatus()).collect(Collectors.toList());
@@ -293,5 +295,37 @@ public class MainTest {
                         .hash()
                         .toString()
         );
+    }
+
+    @Test
+    public void splitTest() {
+        String str = null;
+        String[] split = str.split(";");
+        System.out.println(split.toString());
+    }
+
+    @Test
+    public void uuidTest() {
+        String uuid = UUID.randomUUID().toString();
+        System.out.println(uuid);
+        //时间戳指的就是从1970年1月1日0时0分0秒到现在时间的毫秒数
+        long cm = System.currentTimeMillis();
+        System.out.println(cm);
+    }
+
+    @Test
+    public void listJsonTest() {
+        ArrayList<Integer> strings = Lists.newArrayList(2, 3, 4);
+        System.out.println(strings.toString());
+    }
+
+    @Test
+    public void combineString() {
+        final String str1 = "浙江省";
+        final String str2 = "杭州市";
+        final String str3 = "西湖区";
+        final String str4 = null;
+        final String combineString = (str1 + str2 + str3 + str4).replace("null", "");
+        System.out.println(combineString);
     }
 }
