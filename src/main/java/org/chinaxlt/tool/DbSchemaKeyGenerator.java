@@ -9,7 +9,7 @@ public class DbSchemaKeyGenerator {
 
     public static void main(String[] args) {
 
-        String name = "Your_name";
+        String name = "chinaxlt";
         try {
             String key = generateKey(name);
             System.out.println("key: " + key);

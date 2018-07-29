@@ -5,15 +5,19 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import lombok.val;
 import org.apache.commons.beanutils.BeanUtils;
 import org.chinaxlt.classTest.*;
+import org.chinaxlt.util.MD5Utils;
 import org.chinaxlt.util.ObjectUtils;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -327,5 +331,37 @@ public class MainTest {
         final String str4 = null;
         final String combineString = (str1 + str2 + str3 + str4).replace("null", "");
         System.out.println(combineString);
+    }
+
+    @Test
+    public void md5Test() {
+        String md5 = Hashing.md5().hashString("666", Charset.forName("GBK")).toString();
+        System.out.println(md5);
+        System.out.println(new Date().getTime());
+    }
+
+    @Test
+    public void loaclDateTest() {
+        LocalDate localDate = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        java.sql.Date date = java.sql.Date.valueOf(localDate);
+        System.out.println(localDate.toString());
+        System.out.println(date.toString());
+    }
+
+    @Test
+    public void modTest() {
+//        System.out.println(5000012 % 100000);
+        String isbn = "adfasdfe2we2qwe";
+        Float price = 66.32F;
+        System.out.println(String.format("%s-%d", isbn, price.longValue()));
+        System.out.println(String.format("%s-%d", isbn, null));
+        System.out.println(String.format("%s-%d", isbn, ""));
+    }
+
+    @Test
+    public void md5Test2() throws Exception {
+        String md5 = MD5Utils.EncoderByMd5("1234");
+        System.out.println(md5);
+        System.out.println(md5.length());
     }
 }
