@@ -39,8 +39,8 @@ public class TestXinhuaWebService2 {
         //执行方法并带上参数
         System.out.println("=========" + sf.format(now));
         String temp = khid + keyid + sf.format(now);
-//        String md5 = Hashing.md5().hashString(temp, Charset.forName("UTF-8")).toString();
-        String md5 = MD5Utils.EncoderByMd5(temp);
+        String md5 = Hashing.md5().hashString(temp, Charset.forName("UTF-8")).toString();
+//        String md5 = MD5Utils.EncoderByMd5(temp);
 
         String par_value = "<params>\n" +
                 "<startDate>2018-07-11</startDate>\n" +

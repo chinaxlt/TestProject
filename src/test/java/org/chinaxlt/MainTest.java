@@ -13,6 +13,7 @@ import org.chinaxlt.classTest.*;
 import org.chinaxlt.util.MD5Utils;
 import org.chinaxlt.util.ObjectUtils;
 import org.junit.Test;
+import org.junit.gen5.commons.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -364,4 +365,5 @@ public class MainTest {
         System.out.println(md5);
         System.out.println(md5.length());
     }
+
 }
