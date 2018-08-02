@@ -20,6 +20,7 @@
 package org.chinaxlt.aliyun.oss;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,107 +33,56 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.Bucket;
-import com.aliyun.oss.model.CannedAccessControlList;
-import com.aliyun.oss.model.CreateBucketRequest;
-import com.aliyun.oss.model.ListBucketsRequest;
+import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.ObjectAcl;
-import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.PutObjectRequest;
 
 /**
- * This sample demonstrates how to get started with basic requests to Aliyun OSS
- * using the OSS SDK for Java.
+ * This sample demonstrates how to upload/download an object to/from
+ * Aliyun OSS using the OSS SDK for Java.
  */
-public class GetStartedSample {
+public class SimpleGetObjectSample {
 
-    private static String endpoint = "<endpoint, http://oss-cn-hangzhou.aliyuncs.com>";
-    private static String accessKeyId = "<accessKeyId>";
-    private static String accessKeySecret = "<accessKeySecret>";
-    private static String bucketName = "<bucketName>";
-    private static String key = "<key>";
+    private static String endpoint = "*** Provide OSS endpoint ***";
+    private static String accessKeyId = "*** Provide your AccessKeyId ***";
+    private static String accessKeySecret = "*** Provide your AccessKeySecret ***";
+
+    private static String bucketName = "*** Provide bucket name ***";
+    private static String key = "*** Provide key ***";
 
     public static void main(String[] args) throws IOException {
         /*
          * Constructs a client instance with your account for accessing OSS
          */
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-
-        System.out.println("Getting Started with OSS SDK for Java\n");
+        OSS client = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         try {
 
-            /*
-             * Determine whether the bucket exists
+            /**
+             * Note that there are two ways of uploading an object to your bucket, the one
+             * by specifying an input stream as content source, the other by specifying a file.
              */
-            if (!ossClient.doesBucketExist(bucketName)) {
-                /*
-                 * Create a new OSS bucket
-                 */
-                System.out.println("Creating bucket " + bucketName + "\n");
-                ossClient.createBucket(bucketName);
-                CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
-                createBucketRequest.setCannedACL(CannedAccessControlList.PublicRead);
-                ossClient.createBucket(createBucketRequest);
-            }
 
             /*
-             * List the buckets in your account
+             * Upload an object to your bucket from an input stream
              */
-            System.out.println("Listing buckets");
-
-            ListBucketsRequest listBucketsRequest = new ListBucketsRequest();
-            listBucketsRequest.setMaxKeys(500);
-
-            for (Bucket bucket : ossClient.listBuckets()) {
-                System.out.println(" - " + bucket.getName());
-            }
-            System.out.println();
+            System.out.println("Uploading a new object to OSS from an input stream\n");
+            String content = "Thank you for using Aliyun Object Storage Service";
+            client.putObject(bucketName, key, new ByteArrayInputStream(content.getBytes()));
 
             /*
-             * Upload an object to your bucket
+             * Upload an object to your bucket from a file
              */
             System.out.println("Uploading a new object to OSS from a file\n");
-            ossClient.putObject(new PutObjectRequest(bucketName, key, createSampleFile()));
-
-            /*
-             * Determine whether an object residents in your bucket
-             */
-            boolean exists = ossClient.doesObjectExist(bucketName, key);
-            System.out.println("Does object " + bucketName + " exist? " + exists + "\n");
-
-            ossClient.setObjectAcl(bucketName, key, CannedAccessControlList.PublicRead);
-            ossClient.setObjectAcl(bucketName, key, CannedAccessControlList.Default);
-
-            ObjectAcl objectAcl = ossClient.getObjectAcl(bucketName, key);
-            System.out.println("ACL:" + objectAcl.getPermission().toString());
+            client.putObject(new PutObjectRequest(bucketName, key, createSampleFile()));
 
             /*
              * Download an object from your bucket
              */
             System.out.println("Downloading an object");
-            OSSObject object = ossClient.getObject(bucketName, key);
-            System.out.println("Content-Type: " + object.getObjectMetadata().getContentType());
+            OSSObject object = client.getObject(new GetObjectRequest(bucketName, key));
+            System.out.println("Content-Type: "  + object.getObjectMetadata().getContentType());
             displayTextInputStream(object.getObjectContent());
-
-            /*
-             * List objects in your bucket by prefix
-             */
-            System.out.println("Listing objects");
-            ObjectListing objectListing = ossClient.listObjects(bucketName, "My");
-            for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                System.out.println(" - " + objectSummary.getKey() + "  " +
-                        "(size = " + objectSummary.getSize() + ")");
-            }
-            System.out.println();
-
-            /*
-             * Delete an object
-             */
-            System.out.println("Deleting an object\n");
-            ossClient.deleteObject(bucketName, key);
 
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
@@ -150,7 +100,7 @@ public class GetStartedSample {
             /*
              * Do not forget to shut down the client finally to release all allocated resources.
              */
-            ossClient.shutdown();
+            client.shutdown();
         }
     }
 
@@ -172,7 +122,7 @@ public class GetStartedSample {
             String line = reader.readLine();
             if (line == null) break;
 
-            System.out.println("    " + line);
+            System.out.println("\t" + line);
         }
         System.out.println();
 
@@ -180,3 +130,4 @@ public class GetStartedSample {
     }
 
 }
+
