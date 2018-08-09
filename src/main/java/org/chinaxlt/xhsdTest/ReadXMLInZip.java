@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class readXMLInZip {
+public class ReadXMLInZip {
 
     public static void main(String[] args) throws IOException {
         //readXMLInZipTest(new File("/Users/xianglingtao/Documents/MyWork/新华书店/图书商品.xml.zip"));

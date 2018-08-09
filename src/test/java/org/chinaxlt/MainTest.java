@@ -20,9 +20,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MainTest {
@@ -169,13 +172,69 @@ public class MainTest {
 
     @Test
     public void timeTest2() {
-        Date now = new Date();
         // java.util.Date -> java.time.LocalDate
-        LocalDate localDate = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        String dateStr = "2018-08-02";
+        LocalDate date = LocalDate.parse(dateStr.replace("-", ""), DateTimeFormatter.BASIC_ISO_DATE);
+        LocalDate date2 = LocalDate.parse(dateStr);
+        LocalDate now = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         // java.time.LocalDate -> java.sql.Date
-        Date newDate = java.sql.Date.valueOf(localDate);
+        System.out.println("date:" + date);
+        System.out.println("date2:" + date2);
         System.out.println("now:" + now);
-        System.out.println("newDate:" + newDate);
+        System.out.println("localDate:" + Period.between(date, now).getDays());
+        System.out.println("localDate:" + Period.between(now, date).getDays());
+        System.out.println("localDate:" + Period.between(now, now).getDays());
+    }
+
+    @Test
+    public void mapTest() {
+        List<String> pathList = Lists.newArrayList();
+        pathList.add("/tmp/images/2018-08-08@1.jpg");
+        pathList.add("/tmp/images/2018-08-05@2.jpg");
+        pathList.add("/tmp/images/2018-08-02@3.jpg");
+        pathList.add("/tmp/images/2018-08-10@4.jpg");
+        System.out.println(Collections.max(pathList));
+        System.out.println(Collections.min(pathList));
+
+        LinkedHashMap<String, String> pathTimestampMap = new LinkedHashMap<>();
+        pathTimestampMap.put("/tmp/images/2018-08-08.jpg", "2018-08-08");
+        pathTimestampMap.put("/tmp/images/2018-08-05.jpg", "2018-08-05");
+        pathTimestampMap.put("/tmp/images/2018-08-02.jpg", "2018-08-02");
+        pathTimestampMap.put("/tmp/images/2018-08-10.jpg", "2018-08-10");
+        System.out.println(Collections.max(pathTimestampMap.keySet()));
+        System.out.println(Collections.min(pathTimestampMap.keySet()));
+
+        HashMap<String, Object> map = Maps.newHashMap();
+        map.put("keywords", "123");
+        map.put("keyword", "1234");
+        if (map.get("keywords") != null && map.get("keyword") == null) {
+            map.put("keyword", map.get("keywords"));
+            map.remove("keywords");
+        }
+        System.out.println(map.toString());
+    }
+
+    @Test
+    public void pathTest() {
+        String path = "xlt-1533176343461/images/4216773-fd.jpg";
+        int i = path.indexOf("images/");
+        path = path.substring(i, path.length());
+        System.out.println(i);
+        System.out.println(path);
+
+    }
+
+    @Test
+    public void zzTest() {
+        String str = "[INFO][2018-04-23 10:29:08 911][http-nio-6900-exec-8 2018-04-24]";
+        String regex = "\\d{4}-\\d{2}-\\d{2}?";
+
+        Pattern p = Pattern.compile(regex);
+        Matcher matcher = p.matcher(str);
+        if (matcher.find()) {
+            System.out.println(matcher.groupCount());
+            System.out.println(matcher.group(0));
+        }
     }
 
     @Test

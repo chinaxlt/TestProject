@@ -15,9 +15,10 @@ public class Bean {
 
     private List<Bean> beans;
 
-    public Bean () {}
+    public Bean() {
+    }
 
-    public Bean(String name,Integer age,Boolean isDead) {
+    public Bean(String name, Integer age, Boolean isDead) {
         this.name = name;
         this.age = age;
         this.isDead = isDead;

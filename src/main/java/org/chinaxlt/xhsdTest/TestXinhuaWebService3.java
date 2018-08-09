@@ -151,7 +151,7 @@ public class TestXinhuaWebService3 {
     private static String getTagValueByName(Element element, String tagName) {
         NodeList authorList = element.getElementsByTagName(tagName);
         Integer length = authorList.getLength();
-        if(length.equals(0)) {
+        if (length.equals(0)) {
             return null;
         }
         String data = "";

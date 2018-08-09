@@ -37,6 +37,7 @@ public class TestXinhuaWebService {
 
         Service service = new Service();
         Call call = (Call) service.createCall();
+        call.setTimeout(1000 * 60 * 15);
         call.setTargetEndpointAddress(new URL(endPoint));
         //call.setOperationName("sv_service");
         call.setOperationName("sv_serviceToByte");
@@ -109,7 +110,7 @@ public class TestXinhuaWebService {
     }
 
     public static void readZipFile(byte[] data) {
-        File file = new File("/Users/xianglingtao/Documents/MyWork/新华书店/" + new Date().getTime());
+        File file = new File("/Users/xianglingtao/Documents/MyWork/新华书店/xlt-" + new Date().getTime()+ ".zip") ;
         try {
             OutputStream output = new FileOutputStream(file);
             BufferedOutputStream bufferedOutput = new BufferedOutputStream(output);
@@ -151,7 +152,7 @@ public class TestXinhuaWebService {
     private static String getTagValueByName(Element element, String tagName) {
         NodeList authorList = element.getElementsByTagName(tagName);
         Integer length = authorList.getLength();
-        if(length.equals(0)) {
+        if (length.equals(0)) {
             return null;
         }
         String data = "";

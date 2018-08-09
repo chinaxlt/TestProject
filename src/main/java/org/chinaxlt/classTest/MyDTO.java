@@ -10,6 +10,6 @@ public class MyDTO {
 
     private List<String> dataList;
 
-    private Map<String,String> dataMap;
+    private Map<String, String> dataMap;
 
 }

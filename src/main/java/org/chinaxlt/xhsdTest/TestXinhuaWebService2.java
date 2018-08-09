@@ -6,7 +6,6 @@ import org.apache.axis.Constants;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.commons.lang3.StringUtils;
-import org.chinaxlt.util.MD5Utils;
 
 import javax.xml.rpc.ParameterMode;
 import java.net.URL;
@@ -43,7 +42,7 @@ public class TestXinhuaWebService2 {
 //        String md5 = MD5Utils.EncoderByMd5(temp);
 
         String par_value = "<params>\n" +
-                "<startDate>2018-07-11</startDate>\n" +
+                "<startDate>2018-07-12</startDate>\n" +
                 "<endDate>2018-07-12</endDate>\n" +
                 "</params>";
 

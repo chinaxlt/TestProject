@@ -21,7 +21,7 @@ public class Solution9 {
         }
         return results;
     }
-    
+
     @Test
     public void testS9() {
         ArrayList<String> r = fizzBuzz(15);

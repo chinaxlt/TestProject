@@ -48,11 +48,11 @@ import com.aliyun.oss.model.PutObjectRequest;
  */
 public class GetStartedSample {
 
-    private static String endpoint = "<endpoint, http://oss-cn-hangzhou.aliyuncs.com>";
-    private static String accessKeyId = "<accessKeyId>";
-    private static String accessKeySecret = "<accessKeySecret>";
-    private static String bucketName = "<bucketName>";
-    private static String key = "<key>";
+    private static String endpoint = "oss-cn-beijing-internal.aliyuncs.com";
+    private static String accessKeyId = "LTAIxBfrqJZhZWsO";
+    private static String accessKeySecret = "Py0X8ylvKDi8knM7WUqcUgm6tal8dd";
+    private static String bucketName = "xhsdtest";
+    private static String key = "4216773-fm.jpg";
 
     public static void main(String[] args) throws IOException {
         /*
@@ -95,7 +95,9 @@ public class GetStartedSample {
              * Upload an object to your bucket
              */
             System.out.println("Uploading a new object to OSS from a file\n");
-            ossClient.putObject(new PutObjectRequest(bucketName, key, createSampleFile()));
+            File img = new File("/Users/xianglingtao/Documents/MyWork/新华书店/images/4216773-fm.jpg");
+//            ossClient.putObject(new PutObjectRequest(bucketName, key, createSampleFile()));
+            ossClient.putObject(new PutObjectRequest(bucketName, key, img));
 
             /*
              * Determine whether an object residents in your bucket
@@ -115,7 +117,7 @@ public class GetStartedSample {
             System.out.println("Downloading an object");
             OSSObject object = ossClient.getObject(bucketName, key);
             System.out.println("Content-Type: " + object.getObjectMetadata().getContentType());
-            displayTextInputStream(object.getObjectContent());
+//            displayTextInputStream(object.getObjectContent());
 
             /*
              * List objects in your bucket by prefix

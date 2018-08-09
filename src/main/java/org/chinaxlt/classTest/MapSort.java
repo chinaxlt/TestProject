@@ -87,7 +87,7 @@ public class MapSort {
             }
         });
         for (Map.Entry<String, String> mapping : list) {
-            System.out.println("key:"+mapping.getKey() + "  value:" + mapping.getValue());
+            System.out.println("key:" + mapping.getKey() + "  value:" + mapping.getValue());
         }
     }
 

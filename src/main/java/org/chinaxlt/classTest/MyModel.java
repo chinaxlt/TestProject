@@ -10,6 +10,6 @@ public class MyModel {
 
     private List<String> dataList;
 
-    private Map<String,String> dataMap;
+    private Map<String, String> dataMap;
 
 }
